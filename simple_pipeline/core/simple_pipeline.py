@@ -51,12 +51,10 @@ class SimplePipeline:
 
     def run_pipeline(self):
         for order, pipeline_run in self.m_RunList:
-            print(pipeline_run)
             if type(pipeline_run) == SimplePipelineRun:
                 self.m_ProcessPool.apply(SimplePipeline._run, args=(pipeline_run, ))
             elif type(pipeline_run) == list:
                 self.m_ProcessPool.starmap(SimplePipeline._run, pipeline_run)
-            print('end order {}'.format(order))
 
     @staticmethod
     def _run(pipeline_run):
