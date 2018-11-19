@@ -2,6 +2,7 @@ import xml.etree.ElementTree as et
 import subprocess
 import os
 import multiprocessing
+import sys
 
 
 class SimplePipelineRun:
@@ -11,7 +12,7 @@ class SimplePipelineRun:
         self.m_CdDir = cd_dir
 
     def from_element_tree(self, run_node):
-        self.m_Exe = run_node.find('exe').text
+        self.m_Exe = run_node.find('exe').text if run_node.find('exe') else sys.executable
         self.m_CmdArgs = run_node.find('cmd_args').text.split()
         self.m_CdDir = run_node.find('cd_dir').text if run_node.find('cd_dir') is not None else None
 
