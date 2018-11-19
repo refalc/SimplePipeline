@@ -1,0 +1,22 @@
+<pipeline>
+<run>
+<exe>C:\Users\mikhail\PycharmProjects\SimplePipeline\venv\Scripts\python.exe</exe>
+<cmd_args>-u C:\Users\mikhail\PycharmProjects\SimplePipeline\simple_pipeline\example\example_script_1.py arg1 arg2</cmd_args>
+<cd_dir>D:\!D\18_11_12\test_vkrs\7\440301</cd_dir>
+</run>
+<run>
+<exe>C:\Users\mikhail\PycharmProjects\SimplePipeline\venv\Scripts\python.exe</exe>
+<cmd_args>-u C:\Users\mikhail\PycharmProjects\SimplePipeline\simple_pipeline\example\example_script_2.py arg1 arg2</cmd_args>
+</run>
+<parallel_runs>
+<run>
+<exe>C:\Users\mikhail\PycharmProjects\SimplePipeline\venv\Scripts\python.exe</exe>
+<cmd_args>-u C:\Users\mikhail\PycharmProjects\SimplePipeline\simple_pipeline\example\example_script_1.py arg1 arg2</cmd_args>
+<cd_dir>D:\!D\18_11_12\test_vkrs\7\440301</cd_dir>
+</run>
+<run>
+<exe>C:\Users\mikhail\PycharmProjects\SimplePipeline\venv\Scripts\python.exe</exe>
+<cmd_args>-u C:\Users\mikhail\PycharmProjects\SimplePipeline\simple_pipeline\example\example_script_2.py arg1 arg2</cmd_args>
+</run>
+</parallel_runs>
+</pipeline>
