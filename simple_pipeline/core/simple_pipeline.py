@@ -3,6 +3,7 @@ import subprocess
 import os
 import multiprocessing
 import sys
+import time
 
 
 class SimplePipelineRun:
@@ -49,12 +50,26 @@ class SimplePipeline:
                 self.m_RunList.append((order, [(run, ) for run in parallel_run_list]))
                 order += 1
 
-    def run_pipeline(self):
+    def run_pipeline(self, report_func=print):
+        SUCCESS_CODE = 0
         for order, pipeline_run in self.m_RunList:
             if type(pipeline_run) == SimplePipelineRun:
-                self.m_ProcessPool.apply(SimplePipeline._run, args=(pipeline_run, ))
+                result_code, exec_time = self.m_ProcessPool.apply(SimplePipeline._run, args=(pipeline_run, ))
+                result_status = 'OK' if result_code == SUCCESS_CODE else 'ERROR'
+                report_func('exec status = {} code = {} time = {} step = {}'.format(result_status, result_code,
+                                                                                    exec_time, order))
+                if result_code != SUCCESS_CODE:
+                    report_func('End execution with err on step {}'.format(order))
+                    break
             elif type(pipeline_run) == list:
-                self.m_ProcessPool.starmap(SimplePipeline._run, pipeline_run)
+                result_info = self.m_ProcessPool.starmap(SimplePipeline._run, pipeline_run)
+                result_codes = [result_code for result_code, exec_time in result_info]
+                result_exec_times = [exec_time for result_code, exec_time in result_info]
+                result_statuses = ['OK' if code == SUCCESS_CODE else 'ERROR' for code, exec_time in result_codes]
+                report_func('exec status = {} code = {} time = {} step = {}'.format(result_statuses, result_codes,
+                                                                                    result_exec_times, order))
+                if result_codes.count(SUCCESS_CODE) != len(result_codes):
+                    report_func('End execution with err on step {}'.format(order))
 
     @staticmethod
     def _run(pipeline_run):
@@ -63,8 +78,12 @@ class SimplePipeline:
         if cd_dir is not None:
             os.chdir(cd_dir)
 
-        subprocess.call(pipeline_run.get_subprocess_args())
+        start_time = time.time()
+        res = subprocess.call(pipeline_run.get_subprocess_args())
+        elapsed_time = time.time() - start_time
 
         if cd_dir is not None:
             os.chdir(current_dir)
+
+        return res, elapsed_time
 

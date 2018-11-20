@@ -11,3 +11,4 @@ if __name__ == '__main__':
 
     print('example_script_1 start in {} end in {} with arg_list {} in dir {}'.format(start_time, end_time, sys.argv,
                                                                                      os.getcwd()))
+    exit(0)
